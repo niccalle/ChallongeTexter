@@ -1,4 +1,4 @@
-//npm install readline-sync
+//user must install "ReadLine Sync" with command - npm install readline-sync
 var request = require('request');
 var interval = 2000; //  10 seconds
 var players = {}
