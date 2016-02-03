@@ -1,4 +1,7 @@
 //user must install "ReadLine Sync" with command - npm install readline-sync
+//install twillio = npm install -g twilio
+var twilio = require('twilio');
+var client = require('twilio')('', '');
 var request = require('request');
 var interval = 2000; //  10 seconds
 var players = {}
@@ -28,6 +31,13 @@ function(err, response, body){
 })
 .auth('niccalle', 'kybqKzS7sTjMiLi6MZCYGCJR5sgQZEczlI747hPR', true);
 
+//require("path/to/twilio-node/lib");
+// Twilio Credentials 
+
+
+
+
+//require the Twilio module and create a REST client 
 
 
 setInterval(function() {
@@ -42,7 +52,31 @@ function(err, response, body){
             console.log("Sending a text to " + players[element['match']['player1_id']]+ " at number " + numbers[players[element['match']['player1_id']]] +
             " & " +  players[element['match']['player2_id']]+ " at number " + numbers[players[element['match']['player2_id']]] );
         	matchesPinged[element['match']['id']] = true;
-        	}
+        	
+            //send text to players
+                client.sendMessage({
+                    body: "Hello "+ players[element['match']['player1_id']] + "you have a match vs " + players[element['match']['player2_id']],
+                    to: "+1"+numbers[players[element['match']['player1_id']]],
+                    from: "+19256607127"
+                }, function(err, data) {
+                    if(err)
+                        console.log(err);
+                    console.log(data);
+                });
+                client.sendMessage({
+                    body: "Hello "+ players[element['match']['player2_id']] + "you have a match vs " + players[element['match']['player1_id']],
+                    to: "+1"+numbers[players[element['match']['player2_id']]],
+                    from: "+19256607127"
+                }, function(err, data) {
+                    if(err)
+                        console.log(err);
+                    console.log(data);
+                });
+
+
+
+
+            }
         	console.log(element['match']['player1_id']);
             console.log(element['match']['id']);
         }
