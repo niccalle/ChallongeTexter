@@ -18,3 +18,10 @@ body {
 	width: 100%;
 	margin-top: 20%;
 }
+
+.entry {
+	z-index: -1;
+	background: rgba(255,105,180, 0.2);
+	color: rgb(125,249,255);
+	font-size: 36px;
+}
