@@ -42,7 +42,7 @@ module.exports = function(app){
 		//require the Twilio module and create a REST client 
 
 
-		setInterval(function() {
+		/* setInterval(function() { */
 		request.get({url: 'https://api.challonge.com/v1/tournaments/NicGuacTest/matches.json'},
 		function(err, response, body){
 		    data = JSON.parse(body);
@@ -85,7 +85,7 @@ module.exports = function(app){
 		    });
 		})
 		.auth('niccalle', 'kybqKzS7sTjMiLi6MZCYGCJR5sgQZEczlI747hPR', true);
-		}, interval);
+		/*}, interval); */
 
 		/* .auth('chenboy3', 'DTQjITLqFKyJR8kAGh8oK1uS0VBaPXjymwC2iL3d', true); */
 	})
