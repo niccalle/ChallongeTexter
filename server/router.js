@@ -13,4 +13,5 @@ var bracketController = require('../controller/bracketController');
 
 module.exports = function(app){
 	app.get('/', bracketController.home);
+	app.get('/getBracket/:id', bracketController.getBracket);
 }

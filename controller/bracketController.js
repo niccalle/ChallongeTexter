@@ -1,7 +1,20 @@
+var request = require('request');
+
 module.exports.home = function(req,res){
 	res.render('index');
 }
-
+module.exports.getBracket = function(req,res){
+	console.log(req.params.id);
+	request.get({url: 'https://api.challonge.com/v1/tournaments/'+req.params.id+'/participants.json'},
+	function(err, response, body){ 
+		data = JSON.parse(body);
+		data.forEach(function(element){
+			console.log(element['participant']['name']);
+		});
+	})
+	.auth('niccalle', 'kybqKzS7sTjMiLi6MZCYGCJR5sgQZEczlI747hPR', true);
+	res.send("lol gj nerd");
+}
 module.exports.startTexting = function(req,res){
 	//Get Players
 		request.get({url: 'https://api.challonge.com/v1/tournaments/NicGuacTest/participants.json'},
