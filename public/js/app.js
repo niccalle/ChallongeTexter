@@ -14,6 +14,7 @@ app.controller('setUpController', function($scope, $http){
 
 app.controller('phoneNumberController', function($scope, $http){
 	$scope.entrants = [];
+	var numbers = [];
 	$scope.bracketId = window.location.pathname.split('/')[2];
 	$http.get('/getBracket/'+$scope.bracketId).then(function successCallback(response){
 		console.log(response);
@@ -22,4 +23,11 @@ app.controller('phoneNumberController', function($scope, $http){
 	function errorCallback(response){
 		console.log(response);
 	});
+	$scope.postNumbers = function(){
+		var numbers = [];
+		var inputFields = document.getElementsByClassName('phoneNumber');
+		angular.forEach(inputFields, function(input){
+			numbers.push(input['value']);
+		});
+	}
 })
