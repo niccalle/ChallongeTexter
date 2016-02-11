@@ -3,17 +3,23 @@ var request = require('request');
 module.exports.home = function(req,res){
 	res.render('index');
 }
+module.exports.phoneNumber = function(req,res){
+	res.render('input');
+}
 module.exports.getBracket = function(req,res){
 	console.log(req.params.id);
+	var participants = [];
 	request.get({url: 'https://api.challonge.com/v1/tournaments/'+req.params.id+'/participants.json'},
 	function(err, response, body){ 
 		data = JSON.parse(body);
 		data.forEach(function(element){
-			console.log(element['participant']['name']);
+			var name = element['participant']['name'];
+			console.log(name);
+			participants.push(name);
 		});
+		res.send(participants);
 	})
 	.auth('niccalle', 'kybqKzS7sTjMiLi6MZCYGCJR5sgQZEczlI747hPR', true);
-	res.send("lol gj nerd");
 }
 module.exports.startTexting = function(req,res){
 	//Get Players
