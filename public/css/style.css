@@ -3,12 +3,11 @@ body {
       rgba(0, 0, 0, 0.5),
       rgba(0, 0, 0, 0.5)
     ), url(/assets/harold.jpg);
-	background-repeat: no-repeat;
-	background-size: cover;
+	background-repeat: repeat;
+	background-size: 100% auto;
 	font-family: Sawasdee;
 	font-size: 18px;
 }
-
 .welcome {
 	z-index: -1;
 	background: rgba(0,0,0,0.2);
@@ -19,9 +18,16 @@ body {
 	margin-top: 20%;
 }
 
-.entry {
+.phoneNumber {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+.name {
+	color: rgb(255,255,255);
+}
+/*.entry {
 	z-index: -1;
 	background: rgba(255,105,180, 0.2);
 	color: rgb(125,249,255);
 	font-size: 36px;
-}
+}*/
