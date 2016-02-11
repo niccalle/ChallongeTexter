@@ -3,8 +3,8 @@ var app = express();
 var config = require('./server/config');
 app = config.initialize(app);
 
-app.listen(3000, function(){
-    console.log("Server listening at port 3000");
+app.listen(process.env.PORT, function(){
+    console.log("Server listening at port " + process.env.PORT);
 });
 
 
