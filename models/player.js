@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
 
 var PlayerSchema = new Schema({
 	name: {type: String},
-	number: {type: String}
+	number: {type: String},
+	playerId: {type: Number}
 });
 module.exports = PlayerSchema;

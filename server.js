@@ -9,15 +9,15 @@ mongoose.connect('mongodb://localhost/challongeApp');
 mongoose.connection.on('open', function(){
 	console.log("Mongoose connected");
 })
-var data = {
-	'bracketName': 'NicGuacTest',
-	'matchesPinged': ['1','2','3'],
-	'playerInfo': [{'name': "Nic", 'number': '123'}]
-};
-var newModel = new Brackets(data);
-newModel.save(function(err,succ){
-	console.log('something');
-})
+// var data = {
+// 	'bracketName': 'NicGuacTest',
+// 	'matchesPinged': ['1','2','3'],
+// 	'playerInfo': [{'name': "Nic", 'number': '123'}]
+// };
+// var newModel = new Brackets(data);
+// newModel.save(function(err,succ){
+// 	console.log('something');
+// })
 app.listen(3000, function(){
     console.log("Server listening at port 3000");
 });

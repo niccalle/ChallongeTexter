@@ -16,4 +16,6 @@ module.exports = function(app){
 	app.get('/phoneNumber/:id', bracketController.phoneNumber);
 	app.get('/getBracket/:id', bracketController.getBracket);
 	app.post('/startTexting', bracketController.startTexting);
+	app.get('/textingPage/:id', bracketController.textingPage);
+	app.get('/pingNewMatches/:name', bracketController.pingNewMatches);
 }
