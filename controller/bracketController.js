@@ -66,7 +66,8 @@ module.exports.pingNewMatches = function(req, res){
 					data= JSON.parse(body);
 					data.forEach(function(element){
 						if(element['match']['state'] == 'open'){
-							if(matchesPinged[element['match']] != true)
+							var matchId = element['match']['id'].toString();
+							if(matchesPinged.indexOf(matchId) >= 0)
 							{	
 								var player1;
 								var player2;
@@ -77,12 +78,13 @@ module.exports.pingNewMatches = function(req, res){
 										player2 = player;
 								})
 							textPlayer(player1,player2);
-								
+							matchesPinged.push(matchId);
 							}
 						}
 					})
 				})
 				.auth('niccalle', 'kybqKzS7sTjMiLi6MZCYGCJR5sgQZEczlI747hPR', true);
+			Brackets.update({'bracketName': req.params.name}, {'matchesPinged': matchesPinged}, function(err, numAffected){});
 			}
 
 	});
