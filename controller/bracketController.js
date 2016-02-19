@@ -1,5 +1,7 @@
 var request = require('request');
-var Bracket = require('./model/bracketModel');
+
+var Brackets = require ('../models/bracketModel');
+
 module.exports.home = function(req,res){
 	res.render('index');
 }
@@ -117,9 +119,9 @@ Return: res.render(...havent decided what to make this yet) This is going to a p
 the numbers
 */
 
-module.exports.startTexting = function(req,res){
-	//Get Players
-		request.get({url: 'https://api.challonge.com/v1/tournaments/NicGuacTest/participants.json'},
+
+temp = function (req,res) {
+	request.get({url: 'https://api.challonge.com/v1/tournaments/NicGuacTest/participants.json'},
 		function(err, response, body){
 
 		   
@@ -190,6 +192,40 @@ module.exports.startTexting = function(req,res){
 		    });
 		})
 		.auth('niccalle', 'kybqKzS7sTjMiLi6MZCYGCJR5sgQZEczlI747hPR', true);
+}
+
+/*
+Function: startTexting
+
+Purpose:  To make a model in the database for the specific bracket. 
+It'll have all the numbers that we need to add. Look at the server.js code for an example of how to make a
+new model and insert it into the database. 
+
+Algorithm Descripion: Go through the array of numbers (req.body['numbers']), and make an array of Players.
+Only make a player if the number isn't empty.
+
+Return: res.render(...havent decided what to make this yet) This is going to a page that the user gets once they enter
+the numbers
+*/
+
+
+
+module.exports.startTexting = function(req,res){
+	console.log("Started Texting Method");
+	var data = {
+	'bracketName': req.body['bracketName'],
+	'matchesPinged': [],
+	'numbers': []
+	};
+	req.body['numbers'].forEach(function(element) {
+		if (element != ""){
+			data['numbers'].push({'name': "guac"/*req.body['name']*/, 'number': element});
+		}
+	});
+	var newModel = new Brackets(data);
+	newModel.save(function(err,succ){
+	console.log('database initialized');
+	})
 		/*}, interval); */
 
 		/* .auth('chenboy3', 'DTQjITLqFKyJR8kAGh8oK1uS0VBaPXjymwC2iL3d', true); */
