@@ -21,6 +21,20 @@ module.exports.getBracket = function(req,res){
 	})
 	.auth('niccalle', 'kybqKzS7sTjMiLi6MZCYGCJR5sgQZEczlI747hPR', true);
 }
+
+/*
+Function: startTexting
+
+Purpose:  To make a model in the database for the specific bracket. 
+It'll have all the numbers that we need to add. Look at the server.js code for an example of how to make a
+new model and insert it into the database. 
+
+Algorithm Descripion: Go through the array of numbers (req.body['numbers']), and make an array of Players.
+Only make a player if the number isn't empty.
+
+Return: res.render(...havent decided what to make this yet) This is going to a page that the user gets once they enter
+the numbers
+*/
 module.exports.startTexting = function(req,res){
 	//Get Players
 		request.get({url: 'https://api.challonge.com/v1/tournaments/NicGuacTest/participants.json'},

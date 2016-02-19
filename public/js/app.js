@@ -29,6 +29,7 @@ app.controller('phoneNumberController', function($scope, $http){
 		angular.forEach(inputFields, function(input){
 			numbers.push(input['value']);
 		});
+		$http.post('/startTexting', {'bracketId': bracketId, 'numebrs': numbers});
 		console.log(numbers);
 	}
 })

@@ -15,4 +15,5 @@ module.exports = function(app){
 	app.get('/', bracketController.home);
 	app.get('/phoneNumber/:id', bracketController.phoneNumber);
 	app.get('/getBracket/:id', bracketController.getBracket);
+	app.post('/startTexting', bracketController.startTexting);
 }
