@@ -12,7 +12,7 @@ mongoose.connection.on('open', function(){
 var data = {
 	'bracketName': 'NicGuacTest',
 	'matchesPinged': ['1','2','3'],
-	'numbers': [{'name': "Nic", 'number': '123'}]
+	'playerInfo': [{'name': "Nic", 'number': '123'}]
 };
 var newModel = new Brackets(data);
 newModel.save(function(err,succ){

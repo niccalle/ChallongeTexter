@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 var BracketSchema = new Schema({
 	bracketName: {type: String},
 	matchesPinged: [{type: String}],
-	numbers: [Player]
+	playerInfo: [Player]
 });
 
 module.exports = mongoose.model('Bracket', BracketSchema);
