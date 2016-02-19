@@ -46,7 +46,7 @@ not been pinged then the players number will be texted via twilio and then added
 module.exports.pingNewMatches = function(req, res){
 	//access challonge API
 	//Need to make MatchesPinged, players(name/number). 
-	var matchesPinged = [];
+	var pinged = [];
 	var playerDatabase = []; //name:'Armada' number: '6969696996969'
 
 	Brackets.findOne({'bracketName': req.params.name}, function(error, bracket){
@@ -58,33 +58,36 @@ module.exports.pingNewMatches = function(req, res){
 				playerDatabase.push(element);
 			});
 			bracket['matchesPinged'].forEach(function(element){
-				matchesPinged.push(element);
+				pinged.push(element);
 			});
 
-			request.get({url: 'https://api.challonge.com/v1/tournaments/NicGuacTest/matches.json'},
+			request.get({url: 'https://api.challonge.com/v1/tournaments/'+req.params.name+'/matches.json'},
 				function(err,response,body){
 					data= JSON.parse(body);
 					data.forEach(function(element){
 						if(element['match']['state'] == 'open'){
 							var matchId = element['match']['id'].toString();
-							if(matchesPinged.indexOf(matchId) >= 0)
+							if(pinged.indexOf(matchId) == -1)
 							{	
-								var player1;
-								var player2;
-								playerDatabase.forEach(function(player){
-									if(player['playerId'] == element['match']['player1_id'])
-										player1 = player;
-									if(player['playerId'] == element['match']['player2_id'])
-										player2 = player;
-								})
+							var player1;
+							var player2;
+							playerDatabase.forEach(function(player){
+								if(player['playerId'] == element['match']['player1_id']){
+									player1 = player;
+								}
+								if(player['playerId'] == element['match']['player2_id']){
+									player2 = player;
+								}
+							})
 							textPlayer(player1,player2);
-							matchesPinged.push(matchId);
+							pinged.push(matchId);
+							console.log(pinged);
 							}
 						}
 					})
+				Brackets.update({'bracketName': req.params.name}, {matchesPinged: pinged}, function(err, numAffected){});
 				})
 				.auth('niccalle', 'kybqKzS7sTjMiLi6MZCYGCJR5sgQZEczlI747hPR', true);
-			Brackets.update({'bracketName': req.params.name}, {'matchesPinged': matchesPinged}, function(err, numAffected){});
 			}
 
 	});
@@ -136,18 +139,14 @@ function textPlayer(player1,player2){
 			to: "+1"+player1['number'],
 			from: "+19256607127"
 		}, function(err, data) {
-		     if(err)
-		         console.log(err);
-		     console.log(data);
+		     
 		});	
 		client.sendMessage({
 		    body: "Hello "+ player2['name'] + "you have a match vs " + player1['name'],
 			to: "+1"+player2['number'],
 			from: "+19256607127"
 		}, function(err, data) {
-		     if(err)
-		         console.log(err);
-		     console.log(data);
+		     
 		});	
 }
 

@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Brackets = require('./models/bracketModel');
 app = config.initialize(app);
 
-mongoose.connect('mongodb://localhost/challongeApp');
+mongoose.connect('mongodb://niccalle:tyutyu@ds011158.mongolab.com:11158/challongetexter');
 mongoose.connection.on('open', function(){
 	console.log("Mongoose connected");
 })
@@ -18,8 +18,8 @@ mongoose.connection.on('open', function(){
 // newModel.save(function(err,succ){
 // 	console.log('something');
 // })
-app.listen(3000, function(){
-    console.log("Server listening at port 3000");
+app.listen(process.env.PORT, function(){
+    console.log("Server listening at port " + app.get('port'));
 });
 
 

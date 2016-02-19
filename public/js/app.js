@@ -42,7 +42,7 @@ app.controller('phoneNumberController', function($scope, $http, $location, $wind
 
 app.controller('textingController', function($scope, $http, $interval){
 	$scope.bracketId = window.location.pathname.split('/')[2];
-	//$interval(function(){
+	$interval(function(){
 		$http.get('/pingNewMatches/'+$scope.bracketId);
-	//}, 5000);
+	}, 5000);
 })
