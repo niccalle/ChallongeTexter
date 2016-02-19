@@ -29,5 +29,6 @@ app.controller('phoneNumberController', function($scope, $http){
 		angular.forEach(inputFields, function(input){
 			numbers.push(input['value']);
 		});
+		console.log(numbers);
 	}
 })
