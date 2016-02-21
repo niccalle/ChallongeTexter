@@ -35,6 +35,11 @@ body {
 .name {
 	color: rgb(255,255,255);
 }
+#numberHeader {
+	color: rgb(255,255,255);
+	font-weight: bold;
+	font-size: 200%;
+}
 /*.entry {
 	z-index: -1;
 	background: rgba(255,105,180, 0.2);

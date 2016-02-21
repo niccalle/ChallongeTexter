@@ -21,6 +21,7 @@ app.controller('phoneNumberController', function($scope, $http, $location, $wind
 		$scope.entrants = response['data'];
 	},
 	function errorCallback(response){
+		$window.location.href = '/';
 		console.log(response);
 	});
 	$scope.postNumbers = function(){
@@ -42,7 +43,11 @@ app.controller('phoneNumberController', function($scope, $http, $location, $wind
 
 app.controller('textingController', function($scope, $http, $interval){
 	$scope.bracketId = window.location.pathname.split('/')[2];
+	$scope.entrants = [];
+	$http.get('/getEntrants/'+$scope.bracketId).then(function successCallback(response){
+		$scope.entrants = response['data'];
+	});
 	$interval(function(){
 		$http.get('/pingNewMatches/'+$scope.bracketId);
 	}, 5000);
-})
+});

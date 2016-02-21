@@ -1,6 +1,7 @@
 var request = require('request');
 
 var Brackets = require ('../models/bracketModel');
+var Texter = require ('../helpers/textPlayer');
 var twilio = require('twilio');
 var client = require('twilio')('AC470ec0cec6bebebf541ed7e523425c24',
  '8196d83d4a674648057e7f94942ee4f3');
@@ -14,17 +15,24 @@ module.exports.getBracket = function(req,res){
 	console.log(req.params.id);
 	var participants = [];
 	request.get({url: 'https://api.challonge.com/v1/tournaments/'+req.params.id+'/participants.json'},
-	function(err, response, body){ 
-		data = JSON.parse(body);
-		data.forEach(function(element){
-			var playerData = {};
-			playerData['name'] = element['participant']['name'];
-			playerData['id'] = element['participant']['id'];
-			//console.log(name);
-			participants.push(playerData);
+	function(err, response, body){
+		console.log(response.statusCode);
+		if(response.statusCode == 404){
+			console.log(err);
+			res.sendStatus(response.statusCode);
+		}
+		else{
+			data = JSON.parse(body);
+			data.forEach(function(element){
+				var playerData = {};
+				playerData['name'] = element['participant']['name'];
+				playerData['id'] = element['participant']['id'];
+				//console.log(name);
+				participants.push(playerData);
 
-		});
-		res.send(participants);
+			});
+			res.send(participants);
+		}
 	})
 	.auth('niccalle', 'kybqKzS7sTjMiLi6MZCYGCJR5sgQZEczlI747hPR', true);
 }
@@ -32,6 +40,23 @@ module.exports.textingPage = function(req,res){
 	console.log("trying to get page " + req.params.name);
 	res.render('text');
 }
+
+module.exports.getEntrants = function(req,res){
+	var playerDatabase = [];
+	Brackets.findOne({'bracketName': req.params.id}, function(error, bracket){
+		if(error){
+			console.log(error);
+		}
+		else{
+			bracket['playerInfo'].forEach(function(element){
+				playerDatabase.push(element);
+			});
+			res.send(playerDatabase);
+		}
+	}
+	);
+}
+
 /*
 Function: pingNewMatches
 
@@ -43,112 +68,7 @@ to the pinged match list database. If the match has already pinged then it will 
 not been pinged then the players number will be texted via twilio and then added to the pinged database.
 */
 
-module.exports.pingNewMatches = function(req, res){
-	//access challonge API
-	//Need to make MatchesPinged, players(name/number). 
-	var pinged = [];
-	var playerDatabase = []; //name:'Armada' number: '6969696996969'
-
-	Brackets.findOne({'bracketName': req.params.name}, function(error, bracket){
-		if(error){
-			console.log(error);
-		}
-		else{
-			bracket['playerInfo'].forEach(function(element){
-				playerDatabase.push(element);
-			});
-			bracket['matchesPinged'].forEach(function(element){
-				pinged.push(element);
-			});
-
-			request.get({url: 'https://api.challonge.com/v1/tournaments/'+req.params.name+'/matches.json'},
-				function(err,response,body){
-					data= JSON.parse(body);
-					data.forEach(function(element){
-						if(element['match']['state'] == 'open'){
-							var matchId = element['match']['id'].toString();
-							if(pinged.indexOf(matchId) == -1)
-							{	
-							var player1;
-							var player2;
-							playerDatabase.forEach(function(player){
-								if(player['playerId'] == element['match']['player1_id']){
-									player1 = player;
-								}
-								if(player['playerId'] == element['match']['player2_id']){
-									player2 = player;
-								}
-							})
-							textPlayer(player1,player2);
-							pinged.push(matchId);
-							console.log(pinged);
-							}
-						}
-					})
-				Brackets.update({'bracketName': req.params.name}, {matchesPinged: pinged}, function(err, numAffected){});
-				})
-				.auth('niccalle', 'kybqKzS7sTjMiLi6MZCYGCJR5sgQZEczlI747hPR', true);
-			}
-
-	});
-	/*
-	request.get({url: 'https://api.challonge.com/v1/tournaments/NicGuacTest/matches.json'},
-		function(err, response, body){
-		    data = JSON.parse(body);
-		    data.forEach(function(element){
-		        if(element['match']['state'] == 'open'){
-		       		if(//MatchesPinged != true)
-		       		{
-		        	console.log(//players[element['match']['player1_id']] has a match vs players[element['match']['player2_id']])
-		            console.log(//"Sending a text to " + players[element['match']['player1_id']]+ " at number " + numbers[players[element['match']['player1_id']]] +
-		            //" & " +  players[element['match']['player2_id']]+ " at number " + numbers[players[element['match']['player2_id']]] );
-		        	
-		        	//Set matchesPinged[element['match']['id']] to true
-		        	
-		            //send text to both players
-		                client.sendMessage({
-		                    body: "Hello "+ players[element['match']['player1_id']] + "you have a match vs " + players[element['match']['player2_id']],
-		                    to: "+1"+numbers[players[element['match']['player1_id']]],
-		                    from: "+19256607127"
-		                }, function(err, data) {
-		                    if(err)
-		                        console.log(err);
-		                    console.log(data);
-		                });
-		                client.sendMessage({
-		                    body: "Hello "+ players[element['match']['player2_id']] + "you have a match vs " + players[element['match']['player1_id']],
-		                    to: "+1"+numbers[players[element['match']['player2_id']]],
-		                    from: "+19256607127"
-		                }, function(err, data) {
-		                    if(err)
-		                        console.log(err);
-		                    console.log(data);
-		                });
-
-		            }
-		        }
-		    });
-		})
-		
-*/
-}
-
-function textPlayer(player1,player2){
-		client.sendMessage({
-		    body: "Hello "+ player1['name'] + "you have a match vs " + player2['name'],
-			to: "+1"+player1['number'],
-			from: "+19256607127"
-		}, function(err, data) {
-		     
-		});	
-		client.sendMessage({
-		    body: "Hello "+ player2['name'] + "you have a match vs " + player1['name'],
-			to: "+1"+player2['number'],
-			from: "+19256607127"
-		}, function(err, data) {
-		     
-		});	
-}
+module.exports.pingNewMatches = Texter.pingNewMatches;
 
 /*
 Function: startTexting

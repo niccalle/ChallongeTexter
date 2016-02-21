@@ -1,3 +1,13 @@
 <div class="container" ng-controller="textingController">
+	<div ng-repeat="entrant in entrants">
+		<div class="row">
+			<div class="col-md-6">
+				{[{entrant.name}]}
+			</div>
+			<div class="col-md-6">
+				{[{entrant.number}]}
+			</div>
+		</div>
+	</div>
 	<h1 class="text-center">Happy Texting :)</h1>
 </div>
