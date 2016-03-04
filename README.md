@@ -1,5 +1,7 @@
 # ChallongeTexter
 
+Website is live at http://matchalert.herokuapp.com/
+
 # Tutorial 
 
 On the homescreen enter the custom URL of the respective challonge bracket you wish to use in the textbox titled "Bracket Name". 
