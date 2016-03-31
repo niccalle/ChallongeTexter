@@ -5,7 +5,7 @@ Website is live at http://matchalert.herokuapp.com/
 # Tutorial 
 
 On the homescreen enter the custom URL of the respective challonge bracket you wish to use in the textbox titled "Bracket Name". 
-For demo purposes you can use the bracket name "MatchAlertTest". Fill in the URL and click "Set up Phone Numbers". 
+Fill in the textbox with the name of your bracket and click "Set up Phone Numbers". 
 
 Fill in the respective names of the users entered in the tournament with phone numbers. 
 The respective numbers will then be texted with their match information after clicking "Set up Phone Numbers".
