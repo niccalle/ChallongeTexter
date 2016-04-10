@@ -1,4 +1,4 @@
-# ChallongeTexter
+# Match Alert
 
 Website is live at http://matchalert.herokuapp.com/
 
